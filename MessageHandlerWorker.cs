@@ -1,4 +1,3 @@
-using Infrastructure.Common.Constants;
 using Infrastructure.Messaging.Handlers.Interfaces;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -32,7 +31,7 @@ public class MessageHandlerWorker : IHostedService, IMessageHandlerCallback
         {
             switch (messageType)
             {
-                case MessageTypes.MessageReceived:
+                case "MESSAGE_RECEIVED":
                     Console.WriteLine(message);
                     break;
                 default:
