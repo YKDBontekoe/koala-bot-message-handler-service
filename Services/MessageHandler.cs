@@ -67,6 +67,12 @@ public class MessageHandler : IMessageHandler
             await sender.SendMessageAsync(new ServiceBusMessage(body));
         }
 
+        if (message.User.Id == 316185776021045248)
+        {
+            sender = _serviceBusClient.CreateSender(_configuration["ServiceBus:SendMessageQueueName"]);
+            await sender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(new SendMessage() { ChannelId = message.Channel.Id, IsReaction = true, OriginalMessageId = message.Id, Content = "🤡" })));
+        }
+
         sender = _serviceBusClient.CreateSender(_configuration["ServiceBus:ConsumerQueueName"]);
         await sender.SendMessageAsync(new ServiceBusMessage(body));
     }
