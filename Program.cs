@@ -1,7 +1,8 @@
-﻿using Infrastructure.Messaging.Configuration;
+﻿using Koala.MessageHandlerService.Services;
+using Koala.MessageHandlerService.Services.Interfaces;
+using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Serilog;
 
 namespace Koala.MessageHandlerService;
 
@@ -13,13 +14,13 @@ internal static class Program
             .CreateDefaultBuilder(args)
             .ConfigureServices((hostContext, services) =>
             {
-                services.UseRabbitMQMessagePublisher(hostContext.Configuration);
-                services.UseRabbitMQMessageHandler(hostContext.Configuration);
+                services.AddAzureClients(builder =>
+                {
+                    builder.AddServiceBusClient(hostContext.Configuration["ServiceBus:ConnectionString"]);
+                });
+
+                services.AddScoped<IMessageHandler, MessageHandler>();
                 services.AddHostedService<MessageHandlerWorker>();
-            })
-            .UseSerilog((hostContext, loggerConfiguration) =>
-            {
-                loggerConfiguration.ReadFrom.Configuration(hostContext.Configuration);
             })
             .UseConsoleLifetime()
             .Build();
