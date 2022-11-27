@@ -1,0 +1,29 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: koala-message-handler-service
+spec:
+    replicas: 1
+    strategy:
+      type: RollingUpdate
+      rollingUpdate:
+        maxSurge: 1
+        maxUnavailable: 1
+    selector:
+        matchLabels:
+          app: koala-message-handler-service
+    template:
+        metadata:
+          labels:
+            app: koala-message-handler-service
+        spec:
+          restartPolicy: Always
+          containers:
+          - name: koala-message-handler-service
+            image: ykdbonteregistry.azurecr.io/koala-message-handler-service:v1
+            imagePullPolicy: Always
+            ports:
+              - containerPort: 5001
+            env:
+              - name: DOTNET_ENVIRONMENT
+                value: "Production"
