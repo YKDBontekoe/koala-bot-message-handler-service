@@ -1,6 +1,6 @@
 ﻿version: '3.8'
 services:
-  koala-command-handler:
+  koala-message-handler:
     image: koala-message-handler
     build:
       context: .
