@@ -22,9 +22,6 @@ spec:
           - name: koala-message-handler-service
             image: ykdbonteregistry.azurecr.io/koala-message-handler-service:latest
             resources:
-              requests:
-                cpu: 500m
-                memory: 256Mi
               limits:
                 cpu: 1000m
                 memory: 500Mi
